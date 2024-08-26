@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+    <form action="/add_user" method="POST" >
+        <label for="firstname">Firstname:</label>
+        <input type="text" id="firstname" name="firstname" required><br><br>
+
+        <label for="lastname">LastName:</label>
+        <input type="text" id="lastname" name="lastname" required><br><br>
+
+        <label for="birthdate">Birthdate:</label>
+        <input type="date" id="birthdate" name="birthdate" required><br><br>
+
+        <input type="submit" value="Add User">
+    </form>
+
+    <a href="/">
+        <button type="button">Homepage</button>
+    </a>
+
+</body>
+
+</html>
