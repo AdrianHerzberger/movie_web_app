@@ -2,7 +2,7 @@ from flask import Flask, render_template, flash, request, redirect, url_for
 from _storage.db_data_manager import SQLiteDataManager
 import os
 from datetime import datetime
-from _storage.user_storage import db  
+from _storage.db_instance import db 
 
 app = Flask(__name__)
 app.secret_key = "supersecretkey"

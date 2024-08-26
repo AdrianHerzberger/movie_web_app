@@ -30,4 +30,7 @@ class SQLiteDataManager(DataManagerInterface):
         return User.query.all()
 
     def get_user_movies(self, user_id):
-        pass
+        user = User.query.get(user_id)
+        if user:
+            return user.movies  
+        return None

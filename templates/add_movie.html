@@ -32,7 +32,7 @@
         <input type="number" step="0.01" id="movierating" name="movierating"><br><br>
 
         <label for="userid">Assign User:</label>
-        <select id="userid" name="userid" required>
+        <select id="userid" name="userid">
             <option value="">Select User</option>
             {% for user in users %}
             <option value="{{ user.id }}">{{user.first_name}} {{ user.last_name }}</option>

@@ -1,9 +1,6 @@
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Float, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from .user_storage import User
-
-db = SQLAlchemy()
+from .db_instance import db 
 
 class Movie(db.Model):
     __tablename__ = 'movies'
@@ -15,7 +12,6 @@ class Movie(db.Model):
     release_date = db.Column(db.Date, nullable=True)
     
     user_id = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
-    
     user = relationship('User', back_populates='movies')
     
     
