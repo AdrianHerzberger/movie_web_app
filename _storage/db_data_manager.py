@@ -28,9 +28,33 @@ class SQLiteDataManager(DataManagerInterface):
               
     def get_all_users(self):
         return User.query.all()
-
+    
+    def get_all_movies(self):
+        return Movie.query.all()
+    
     def get_user_movies(self, user_id):
         user = User.query.get(user_id)
         if user:
             return user.movies  
         return None
+    
+    def update_movie(self, movie_id, movie_title, release_date, directory, movie_rating, user_id):
+        movie = Movie.query.get(movie_id)
+        if movie:
+            movie.movie_title = movie_title
+            movie.release_date = release_date
+            movie.directory = directory
+            movie.movie_rating = movie_rating
+            movie.user_id = user_id  
+            try:
+                self.db.session.commit()
+            except Exception as e:
+                self.db.session.rollback()
+                print(f"Error updating movie: {e}")
+                return None
+            return movie
+        return None
+    
+    def get_movie_by_id(self, movie_id):
+        return Movie.query.get(movie_id)
+

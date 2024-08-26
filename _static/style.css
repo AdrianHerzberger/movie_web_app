@@ -1,0 +1,23 @@
+.movie-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 20px;
+
+    padding: 15px;
+}
+
+.button-action {
+    display: flex;
+    flex-direction: column;
+
+    button {
+        margin: 5px
+    }
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }

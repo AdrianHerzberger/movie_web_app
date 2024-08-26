@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+
+<body>
+
+    {% if movies %}
+    <ul>
+        {% for movie in movies %}
+        <li>
+            <div class="movie-list">
+                <p style="cursor: pointer;">{{ movie.movie_title }}</p>
+                <div class="button-action">
+                    <form action="/update_movie/{{ movie.id }}/" method="POST">
+                        <button type="submit">Update movie</button>
+                    </form>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No movie available.</p>
+    {% endif %}
+
+</body>
+
+</html>
