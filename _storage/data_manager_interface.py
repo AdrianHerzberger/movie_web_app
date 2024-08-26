@@ -9,6 +9,10 @@ class DataManagerInterface(ABC):
     @abstractmethod
     def add_user(self, first_name, last_name, birth_date):
         pass
+    
+    @abstractmethod
+    def add_movie(self):
+        pass
 
     @abstractmethod
     def get_user_movies(self, user_id):

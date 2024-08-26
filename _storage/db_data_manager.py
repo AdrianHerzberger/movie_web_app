@@ -1,4 +1,5 @@
 from .user_storage import db, User
+from .movie_storage import db, Movie
 from .data_manager_interface import DataManagerInterface
 
 class SQLiteDataManager(DataManagerInterface):
@@ -14,6 +15,17 @@ class SQLiteDataManager(DataManagerInterface):
         self.db.session.add(new_user)
         self.db.session.commit()
         
+    def add_movie(self, movie_title, release_date, directory, movie_rating, user_id):
+        new_movie = Movie(
+            movie_title=movie_title,
+            release_date=release_date,
+            directory=directory,
+            movie_rating=movie_rating,
+            user_id=user_id
+        )
+        self.db.session.add(new_movie)
+        self.db.session.commit()
+              
     def get_all_users(self):
         return User.query.all()
 

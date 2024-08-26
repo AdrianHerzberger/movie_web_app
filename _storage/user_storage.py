@@ -12,3 +12,4 @@ class User(db.Model):
     last_name = db.Column(db.String(50), nullable=False)
     birth_date = db.Column(db.Date, nullable=False)
     
+    movies = relationship('Movie', back_populates='user', cascade="all, delete-orphan")

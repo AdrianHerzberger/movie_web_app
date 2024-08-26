@@ -28,6 +28,27 @@ def add_user():
         return redirect(url_for('add_user'))
         
     return render_template("add_user.html")
+
+
+@app.route("/add_movie", methods=["GET", "POST"])
+def add_movie():
+    if request.method == "POST":
+        movie_title = request.form["movietitle"]
+        release_date = request.form["releasedate"]
+        directory = request.form["directory"]
+        movie_rating = request.form["movierating"]
+        user_id = request.form["userid"]
+        
+        release_date = datetime.strptime(release_date, "%Y-%m-%d").date()
+        
+        data_manager.add_movie(movie_title, release_date, directory, movie_rating, user_id)
+        
+        flash(f"Movie {movie_title} added successfully!")
+        return redirect(url_for('add_movie'))
+    
+    users = data_manager.get_all_users()
+    
+    return render_template("add_movie.html", users=users)
         
 if __name__ == "__main__":
     with app.app_context():
