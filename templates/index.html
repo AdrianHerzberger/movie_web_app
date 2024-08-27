@@ -36,7 +36,7 @@
                     {% if users %}
                         {% for user in users %}
                             <form action="/users/{{ user.id }}/delete_movie/{{ movie.id }}/" method="POST">
-                                <button type="submit">Delete movie</button>
+                                <button type="submit">Delete movie for user {{ user.first_name}} {{user.last_name}}</button>
                             </form>
                         {% endfor %}
                     {% endif %}

@@ -1,6 +1,7 @@
 from .user_storage import db, User
 from .movie_storage import db, Movie
 from .data_manager_interface import DataManagerInterface
+from sqlalchemy.exc import SQLAlchemyError
 
 class SQLiteDataManager(DataManagerInterface):
     def __init__(self, db_instance):
@@ -16,17 +17,20 @@ class SQLiteDataManager(DataManagerInterface):
         self.db.session.commit()
         
     def add_movie(self, movie_title, release_date, directory, movie_rating, user_id):
-        new_movie = Movie(
-            movie_title=movie_title,
-            release_date=release_date,
-            directory=directory,
-            movie_rating=movie_rating,
-            user_id=user_id
-        )
-        self.db.session.add(new_movie)
-        self.db.session.commit()
-        
-        
+        try:
+            new_movie = Movie(
+                movie_title=movie_title,
+                release_date=release_date,
+                directory=directory,
+                movie_rating=movie_rating,
+                user_id=user_id
+            )
+            self.db.session.add(new_movie)
+            self.db.session.commit()
+        except SQLAlchemyError as e:
+            self.db.session.rollback() 
+            print(f"Error adding movie: {e}")
+
     def get_user(self, user_id):
         return User.query.get(user_id)
               
@@ -52,7 +56,7 @@ class SQLiteDataManager(DataManagerInterface):
             update_movie.user_id = user_id  
             try:
                 self.db.session.commit()
-            except Exception as e:
+            except SQLAlchemyError as e:
                 self.db.session.rollback()
                 print(f"Error updating movie: {e}")
                 return None
@@ -65,7 +69,7 @@ class SQLiteDataManager(DataManagerInterface):
             try:
                 self.db.session.delete(delete_movie)
                 self.db.session.commit()
-            except Exception as e:
+            except SQLAlchemyError as e:
                 self.db.session.rollback()
                 print(f"Error updating movie: {e}")
         
