@@ -7,6 +7,10 @@
     padding: 15px;
 }
 
+.user-list {
+
+}
+
 .button-action {
     display: flex;
     flex-direction: column;
@@ -20,4 +24,4 @@ ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
-  }
+}

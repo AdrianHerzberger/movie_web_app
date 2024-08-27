@@ -25,6 +25,10 @@ class SQLiteDataManager(DataManagerInterface):
         )
         self.db.session.add(new_movie)
         self.db.session.commit()
+        
+        
+    def get_user(self, user_id):
+        return User.query.get(user_id)
               
     def get_all_users(self):
         return User.query.all()

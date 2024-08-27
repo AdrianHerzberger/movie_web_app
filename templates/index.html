@@ -4,17 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/_static/style.css">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
 
+    <h1>Welcome to your movie app!</h1>
+
     <a href="/add_movie">
         <button type="button">Add movie</button>
     </a>
-    
+
     <a href="/add_user">
         <button type="button">Add user</button>
+    </a>
+
+    <a href="/users">
+        <button type="button">List users</button>
     </a>
 
     {% if movies %}
@@ -27,9 +33,13 @@
                     <form action="/update_movie/{{ movie.id }}/" method="POST">
                         <button type="submit">Update movie</button>
                     </form>
-                    <form action="/delete_movie/{{ movie.id }}/" method="POST">
-                        <button type="submit">Delete movie</button>
-                    </form>
+                    {% if users %}
+                        {% for user in users %}
+                            <form action="/users/{{ user.id }}/delete_movie/{{ movie.id }}/" method="POST">
+                                <button type="submit">Delete movie</button>
+                            </form>
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </div>
         </li>

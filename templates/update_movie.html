@@ -20,29 +20,29 @@
 
     <form method="POST">
         <label for="movietitle">Movie Title:</label>
-        <input type="text" id="movietitle" name="movietitle" value="{{ movie.movie_title }}"><br><br>
-
-        <label for="releasedate">Release date:</label>
-        <input type="date" id="releasedate" name="releasedate" value="{{ movie.release_date }}"><br><br>
-
-        <label for="directory">Directory:</label>
-        <input type="text" id="directory" name="directory" value="{{ movie.directory }}"><br><br>
-
+        <input type="text" name="movietitle" id="movietitle" value="{{ movie.movie_title }}">
+    
+        <label for="releasedate">Release Date:</label>
+        <input type="date" name="releasedate" id="releasedate" value="{{ movie.release_date }}">
+    
+        <label for="directory">Director:</label>
+        <input type="text" name="directory" id="directory" value="{{ movie.directory }}">
+    
         <label for="movierating">Rating:</label>
-        <input type="number" step="0.01" id="movierating" name="movierating" value="{{ movie.movie_rating }}"><br><br>
-
-        <label for="userid">Assign User:</label>
-        <select id="userid" name="userid">
-            <option value="">Select User</option>
+        <input type="text" name="movierating" id="movierating" value="{{ movie.movie_rating }}">
+    
+        <label for="userid">User:</label>
+        <select name="userid" id="userid">
             {% for user in users %}
-            <option value="{{ user.id }}" {% if movie.user_id==user.id %}selected{% endif %}>
+            <option value="{{ user.id }}" {% if user.id == movie.user_id %}selected{% endif %}>
                 {{ user.first_name }} {{ user.last_name }}
             </option>
             {% endfor %}
-        </select><br><br>
-
-        <input type="submit" value="Update Movie">
+        </select>
+    
+        <button type="submit">Update Movie</button>
     </form>
+    
 </body>
 
 </html>

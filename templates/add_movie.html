@@ -18,29 +18,29 @@
     {% endif %}
     {% endwith %}
 
-    <form action="/add_movie" method="POST">
+    <form method="POST">
         <label for="movietitle">Movie Title:</label>
-        <input type="text" id="movietitle" name="movietitle" required><br><br>
+        <input type="text" name="movietitle" id="movietitle" required>
 
-        <label for="releasedate">Release date:</label>
-        <input type="date" id="releasedate" name="releasedate"><br><br>
+        <label for="releasedate">Release Date:</label>
+        <input type="date" name="releasedate" id="releasedate">
 
-        <label for="directory">Directory:</label>
-        <input type="text" id="directory" name="directory"><br><br>
+        <label for="directory">Director:</label>
+        <input type="text" name="directory" id="directory">
 
         <label for="movierating">Rating:</label>
-        <input type="number" step="0.01" id="movierating" name="movierating"><br><br>
+        <input type="text" name="movierating" id="movierating">
 
-        <label for="userid">Assign User:</label>
-        <select id="userid" name="userid">
-            <option value="">Select User</option>
+        <label for="userid">User:</label>
+        <select name="userid" id="userid">
             {% for user in users %}
-            <option value="{{ user.id }}">{{user.first_name}} {{ user.last_name }}</option>
+            <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</option>
             {% endfor %}
-        </select><br><br>
+        </select>
 
-        <input type="submit" value="Add Movie">
+        <button type="submit">Add Movie</button>
     </form>
+
 
     <a href="/">
         <button type="button">Homepage</button>
