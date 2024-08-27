@@ -21,3 +21,7 @@ class DataManagerInterface(ABC):
     @abstractmethod
     def update_movie(self, movie_id):
         pass
+    
+    @abstractmethod
+    def delete_movie(self, movie_id):
+        pass

@@ -4,10 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="/_static/style.css">
 </head>
 
 <body>
+
+    <a href="/add_movie">
+        <button type="button">Add movie</button>
+    </a>
+    
+    <a href="/add_user">
+        <button type="button">Add user</button>
+    </a>
 
     {% if movies %}
     <ul>
@@ -18,6 +26,9 @@
                 <div class="button-action">
                     <form action="/update_movie/{{ movie.id }}/" method="POST">
                         <button type="submit">Update movie</button>
+                    </form>
+                    <form action="/delete_movie/{{ movie.id }}/" method="POST">
+                        <button type="submit">Delete movie</button>
                     </form>
                 </div>
             </div>

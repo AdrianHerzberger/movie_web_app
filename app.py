@@ -16,7 +16,7 @@ db.init_app(app)
 
 data_manager = SQLiteDataManager(db)
 
-    
+
 @app.route("/", methods=["GET"])
 def home():
     if request.method == "GET":
@@ -73,24 +73,35 @@ def update_movie(movie_id):
         directory = request.form.get("directory", "")
         movie_rating = request.form.get("movierating", "")
         user_id = request.form.get("userid", "")
-        
+
         if release_date:
             release_date = datetime.strptime(release_date, "%Y-%m-%d").date()
-        
-        data_manager.update_movie(movie_id, movie_title, release_date, directory, movie_rating, user_id)
+
+        data_manager.update_movie(
+            movie_id, movie_title, release_date, directory, movie_rating, user_id
+        )
 
         flash(f"Movie {movie_title} updated successfully!")
         return redirect(url_for("update_movie", movie_id=movie_id))
 
     movie = data_manager.get_movie_by_id(movie_id)
     users = data_manager.get_all_users()
-    
+
     if not movie:
         flash("Movie not found.")
         return redirect(url_for("home"))
-    
+
     return render_template("update_movie.html", movie=movie, users=users)
 
+
+@app.route("/delete_movie/<int:movie_id>/", methods=["GET", "POST"])
+def delete_movie(movie_id):
+    if request.method == "POST":
+        data_manager.delete_movie(movie_id)
+
+        flash(f"Movie deleted sucessfully!")
+
+    return render_template("delete_movie.html")
 
 
 if __name__ == "__main__":
