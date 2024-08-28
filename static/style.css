@@ -1,3 +1,38 @@
+.home-section {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.nav-section {
+    margin-left: 2rem;
+}
+
+.card {
+    margin: 10px;
+}
+
+.btn-primary{
+    margin: 5px 0px;
+}
+
+.input-section {
+    margin: 20px 0px 0px 20px;
+}
+
+.input-group {
+    align-items: center !important;
+    width: 50% !important;
+}
+
+.form-select {
+    width: 50% !important
+}
+
+label {
+    min-width: 150px;
+}
+
 .movie-list {
     display: flex;
     flex-direction: row;
