@@ -170,7 +170,7 @@ def delete_movie(user_id, movie_id):
             except Exception as e:
                 flash(f"Error updating movie: {str(e)}")
 
-    return render_template("delete_movie.html", movie_id=movie_id, user_id=user_id)
+    return render_template("delete_movie.html")
 
 
 if __name__ == "__main__":
