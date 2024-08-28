@@ -10,9 +10,10 @@ class Movie(db.Model):
     movie_rating = db.Column(db.Float, nullable=True)
     directory = db.Column(db.String, nullable=True)
     release_date = db.Column(db.Date, nullable=True)
-    
     user_id = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
-    user = relationship('User', back_populates='movies')
+    
+    users = relationship('User', back_populates='movies')
+    reviews = relationship('Review', back_populates='movies')
     
     
     

@@ -26,6 +26,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="/add_review">
+                        <button type="button" class="btn">Add review</button>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="/users">
                         <button type="button" class="btn">List users</button>
                     </a>
@@ -44,13 +49,23 @@
                             <button type="submit" class="btn btn-primary">Update movie</button>
                         </form>
                         {% if users %}
-                        {% for user in users %}
-                        {% if movie.user_id == user.id %}
-                        <form action="/users/{{ user.id }}/delete_movie/{{ movie.id }}/" method="POST">
-                            <button type="submit" class="btn btn-danger">Delete movie for {{ user.first_name }} {{ user.last_name }}</button>
-                        </form>
+                            {% for user in users %}
+                                {% if movie.user_id == user.id %}
+                                <form action="/users/{{ user.id }}/delete_movie/{{ movie.id }}/" method="POST">
+                                    <button type="submit" class="btn btn-danger">Delete movie for {{ user.first_name }} {{ user.last_name }}</button>
+                                </form>
+                                {% endif %}
+                            {% endfor %}
                         {% endif %}
-                        {% endfor %}
+
+                        {% if reviews %}
+                            {% for review in reviews %}
+                                {% if review.movie_id == movie.id %}
+                                <div class="mt-1">
+                                    <p>Review text: {{ review.review_text}} <br> Rating: {{ review.rating }}</p>
+                                </div> 
+                                {% endif %}
+                            {% endfor %}
                         {% endif %}
                     </div>
                 </div>

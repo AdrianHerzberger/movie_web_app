@@ -1,11 +1,6 @@
 from abc import ABC, abstractmethod
 
-class DataManagerInterface(ABC):
-
-    @abstractmethod
-    def get_all_users(self):
-        pass
-    
+class DataManagerInterface(ABC): 
     @abstractmethod
     def get_user(self, user_id):
         pass
@@ -19,7 +14,7 @@ class DataManagerInterface(ABC):
         pass
 
     @abstractmethod
-    def get_user_movies(self, user_id):
+    def add_review(self, review_text, rating, user_id, movie_id):
         pass
     
     @abstractmethod
