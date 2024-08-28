@@ -92,21 +92,31 @@ def add_movie():
         omdb_data = fetch_movie_details_from_omdb(movie_title)
         
         if omdb_data:
-            movie_title = omdb_data.get("Title", movie_title)
+            full_title = omdb_data.get("Title", movie_title)
+            movie_title = full_title.split(" AKA:")[0].strip() 
             release_date = omdb_data.get("Released", "N/A") 
             directory = omdb_data.get("Director", directory)
             movie_rating = omdb_data.get("imdbRating", movie_rating)
             
-        if isinstance(release_date, str) and release_date.strip() and release_date != "N/A":
-                release_date = datetime.strptime(release_date, "%d %b %Y").date()
-        elif release_date == "N/A":
-            release_date = None 
+        if release_date and release_date != "N/A":
+            try:
+                if isinstance(release_date, str) and release_date:
+                    release_date = datetime.strptime(release_date, "%Y-%m-%d").date()
+            except ValueError:
+                release_date = None
+        else:
+            release_date = None
+            
+        try:
+            movie_rating = float(movie_rating)
+        except ValueError:
+            movie_rating = None
         
         try:
             data_manager.add_movie(
                 movie_title, release_date, directory, movie_rating, user_id
             )
-            flash(f"Movie {movie_title} added successfully!")
+            flash(f"Movie: {movie_title} added successfully!")
         except Exception as e:
             flash(f"Error adding movie: {str(e)}")
 
