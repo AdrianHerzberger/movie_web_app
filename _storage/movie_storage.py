@@ -16,6 +16,12 @@ class Movie(db.Model):
     director = relationship('Director', back_populates='directed_movies')
     reviews = relationship('Review', back_populates='movie')
 
-    
-    
-    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'movie_title': self.movie_title,
+            'release_date': self.release_date.isoformat() if self.release_date else None,
+            'directory': self.directory,
+            'movie_rating': self.movie_rating,
+            'user_id': self.user_id
+        }

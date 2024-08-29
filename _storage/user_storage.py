@@ -12,3 +12,12 @@ class User(db.Model):
     
     movies = relationship('Movie', back_populates='owner', cascade="all, delete-orphan")
     reviews = relationship('Review', back_populates='author')
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'birth_date': self.birth_date.isoformat(),  
+            'movies': [movie.to_dict() for movie in self.movies]  
+        }

@@ -1,6 +1,7 @@
 from flask import Flask, render_template, flash, request, redirect, url_for
 from flask_migrate import Migrate
 from _storage.db_data_manager import SQLiteDataManager
+from api import api 
 import os
 import requests
 from datetime import datetime
@@ -9,6 +10,7 @@ from dotenv import load_dotenv
 
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
+app.register_blueprint(api, url_prefix='/api') 
 
 database_path = os.path.join(
     os.path.abspath(os.path.dirname(__file__)), "_data", "movies_data.sqlite"
