@@ -21,42 +21,52 @@
     {% endif %}
     {% endwith %}
 
-    <form method="POST">
-        <div class="input-section">
-            <div class="input-group mb-1">
-                <label for="movietitle">Movie Title:</label>
-                <input type="text" class="form-control" name="movietitle" id="movietitle" value="{{ movie.movie_title }}">
-            </div>
+    {% if movie %}
+        <form action="/update_movie/{{movie.id}}/" method="POST">
+            <div class="input-section">
+                <div class="input-group mb-1">
+                    <label for="movietitle">Movie Title:</label>
+                    <input type="text" class="form-control" name="movietitle" id="movietitle" value="{{ movie.movie_title }}">
+                </div>
 
-            <div class="input-group mb-1">
-                <label for="releasedate">Release Date:</label>
-                <input type="date" class="form-control" name="releasedate" id="releasedate" value="{{ movie.release_date }}">
-            </div>
+                <div class="input-group mb-1">
+                    <label for="releasedate">Release Date:</label>
+                    <input type="date" class="form-control" name="releasedate" id="releasedate" value="{{ movie.release_date }}">
+                </div>
 
-            <div class="input-group mb-1">
-                <label for="directory">Director:</label>
-                <input type="text" class="form-control" name="directory" id="directory" value="{{ movie.directory }}">
-            </div>
+                <div class="input-group mb-1">
+                    <label for="directory">Director:</label>
+                    <input type="text" class="form-control" name="directory" id="directory" value="{{ movie.directory }}">
+                </div>
 
-            <div class="input-group mb-1">
-                <label for="movierating">Rating:</label>
-                <input type="text" class="form-control" name="movierating" id="movierating" value="{{ movie.movie_rating }}">
-            </div>
+                <div class="input-group mb-1">
+                    <label for="movierating">Rating:</label>
+                    <input type="text" class="form-control" name="movierating" id="movierating" value="{{ movie.movie_rating }}">
+                </div>
 
-            <div class="input-group mb-1">
-                <label for="userid">User:</label>
-                <select name="userid" id="userid" class="form-control">
-                    {% for user in users %}
-                    <option value="{{ user.id }}" {% if user.id==movie.user_id %}selected{% endif %}>
-                        {{ user.first_name }} {{ user.last_name }}
-                    </option>
-                    {% endfor %}
-                </select>
+                <div class="input-group mb-1">
+                    <label for="userid">User:</label>
+                    <select name="userid" id="userid" class="form-control">
+                        {% for user in users %}
+                        <option value="{{ user.id }}" {% if user.id==movie.user_id %}selected{% endif %}>
+                            {{ user.first_name }} {{ user.last_name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Update Movie</button>
             </div>
             
-            <button type="submit" class="btn btn-primary">Update Movie</button>
-        </div>
-    </form>
+            <a href="/">
+                <button type="button" class="btn">Home</button>
+            </a>
+        </form>
+
+    {% endif %}
+
+   
+    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">

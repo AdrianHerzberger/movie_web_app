@@ -1,4 +1,5 @@
 from flask import Flask, render_template, flash, request, redirect, url_for
+from flask_migrate import Migrate
 from _storage.db_data_manager import SQLiteDataManager
 import os
 import requests
@@ -12,9 +13,11 @@ app.secret_key = "supersecretkey"
 database_path = os.path.join(
     os.path.abspath(os.path.dirname(__file__)), "_data", "movies_data.sqlite"
 )
+
 app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{database_path}"
 db.init_app(app)
 data_manager = SQLiteDataManager(db)
+migrate = Migrate(app, db)
 
 load_dotenv()
 OMDB_API_KEY = os.getenv("OMDB_API_KEY")
@@ -45,12 +48,9 @@ def page_not_found(e):
 @app.route("/", methods=["GET"])
 def home():
     if request.method == "GET":
-        try:
-            movies = data_manager.get_all_movies()
-            users = data_manager.get_all_users()
-            reviews = data_manager.get_all_reviews()
-        except Exception as e:
-            flash(f"Error fetching movies or users: {str(e)}")
+        movies = data_manager.get_all_movies()
+        users = data_manager.get_all_users()
+        reviews = data_manager.get_all_reviews()
 
     return render_template("index.html", movies=movies, users=users, reviews=reviews)
 
@@ -66,6 +66,17 @@ def list_users():
 
     return render_template("users.html", users=users)
 
+@app.route("/directors", methods=["GET"])
+def list_directors():
+    if request.method == "GET":
+
+        try:
+            directors = data_manager.get_all_directors()
+        except Exception as e:
+            flash(f"Error fetching users: {str(e)}")
+
+    return render_template("directors.html", directors=directors)
+
 
 @app.route("/add_user", methods=["GET", "POST"])
 def add_user():
@@ -80,8 +91,6 @@ def add_user():
             flash(f"User: {first_name} {last_name} added successfully!")
         except Exception as e:
             flash(f"Error adding user: {str(e)}")
-
-        return redirect(url_for("add_user"))
 
     return render_template("add_user.html")
 
@@ -159,6 +168,31 @@ def add_review():
     return render_template("add_review.html", users=users, movies=movies)
 
 
+@app.route("/add_director", methods=["GET", "POST"])
+def add_director():
+    movies = data_manager.get_all_movies()
+
+    if request.method == "POST":
+
+        director_name = request.form["directorname"]
+        birth_date = request.form["birthdate"]
+        movie_id = request.form["movieid"]
+
+        try:
+            if isinstance(birth_date, str) and birth_date:
+                birth_date = datetime.strptime(birth_date, "%Y-%m-%d").date()
+        except ValueError:
+            birth_date = None
+
+        try:
+            data_manager.add_director(director_name, birth_date, movie_id)
+            flash(f"Director: {director_name} added successfully!")
+        except Exception as e:
+            flash(f"Error adding movie: {str(e)}")
+
+    return render_template("add_director.html", movies=movies)
+
+
 @app.route("/update_movie/<int:movie_id>/", methods=["GET", "POST"])
 def update_movie(movie_id):
     movie = data_manager.get_movie_by_id(movie_id)
@@ -185,8 +219,6 @@ def update_movie(movie_id):
             flash(f"Movie {movie_title} updated successfully!")
         except Exception as e:
             flash(f"Error updating movie: {str(e)}")
-
-        return redirect(url_for("update_movie", movie_id=movie_id))
 
     return render_template("update_movie.html", movie=movie, users=users)
 

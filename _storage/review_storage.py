@@ -10,8 +10,8 @@ class Review(db.Model):
     rating = db.Column(db.Float, nullable=True)
     user_id = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
     movie_id = db.Column(db.Integer, ForeignKey('movies.id'), nullable=False)
-    
-    users = relationship('User', back_populates='reviews')
-    movies = relationship('Movie', back_populates='reviews')
-    
+
+    author = relationship('User', back_populates='reviews')
+    movie = relationship('Movie', back_populates='reviews')
+
     

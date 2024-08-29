@@ -10,5 +10,5 @@ class User(db.Model):
     last_name = db.Column(db.String(50), nullable=False)
     birth_date = db.Column(db.Date, nullable=False)
     
-    movies = relationship('Movie', back_populates='users', cascade="all, delete-orphan")
-    reviews = relationship('Review', back_populates='users')
+    movies = relationship('Movie', back_populates='owner', cascade="all, delete-orphan")
+    reviews = relationship('Review', back_populates='author')

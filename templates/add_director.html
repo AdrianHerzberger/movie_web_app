@@ -21,39 +21,30 @@
     {% endif %}
     {% endwith %}
 
-    <form action="/add_movie" method="POST">
+    <form action="/add_director" method="POST">
         <div class="input-section">
             <div class="input-group mb-1">
-                <label for="movietitle">Movie Title:</label>
-                <input type="text" class="form-control" name="movietitle" id="movietitle" required>
+                <label for="directorname">Director name:</label>
+                <input type="text" class="form-control" id="directorname" name="directorname" required><br><br>
             </div>
 
             <div class="input-group mb-1">
-                <label for="releasedate">Release Date:</label>
-                <input type="date" class="form-control" name="releasedate" id="releasedate">
+                <label for="birthdate">Birthdate:</label>
+                <input type="date" class="form-control" id="birthdate" name="birthdate" required><br><br>
             </div>
 
             <div class="input-group mb-1">
-                <label for="directory">Director:</label>
-                <input type="text" class="form-control" name="directory" id="directory">
-            </div>
-
-            <div class="input-group mb-1">
-                <label for="movierating">Rating:</label>
-                <input type="text" class="form-control" name="movierating" id="movierating">
-            </div>
-
-            <div class="input-group mb-1">
-                <label for="userid">User:</label>
-                <select name="userid" id="userid" class="form-select">
-                    {% for user in users %}
-                    <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</option>
+                <label for="movieid">Movie:</label>
+                <select name="movieid" id="movieid" class="form-select">
+                    {% for movie in movies %}
+                    <option value="{{ movie.id }}">{{ movie.movie_title }}</option>
                     {% endfor %}
                 </select>
             </div>
-
-            <button type="submit" class="btn btn-primary">Add Movie</button>
+    
+            <button type="submit" class="btn btn-primary">Add Director</button>
         </div>
+
     </form>
 
     <a href="/">
@@ -62,7 +53,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
+        </script>
 
 </body>
 

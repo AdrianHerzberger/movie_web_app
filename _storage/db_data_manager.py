@@ -1,6 +1,7 @@
 from .user_storage import db, User
 from .movie_storage import db, Movie
 from .review_storage import db, Review
+from .director_storage import db, Director
 from .data_manager_interface import DataManagerInterface
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -14,6 +15,9 @@ class SQLiteDataManager(DataManagerInterface):
 
     def get_all_users(self):
         return User.query.all()
+    
+    def get_all_directors(self):
+        return Director.query.all()
 
     def get_all_movies(self):
         return Movie.query.all()
@@ -86,6 +90,19 @@ class SQLiteDataManager(DataManagerInterface):
                 movie_id=movie_id,
             )
             self.db.session.add(new_rating)
+            self.db.session.commit()
+        except SQLAlchemyError as e:
+            self.db.session.rollback()
+            print(f"Error adding movie: {e}")
+            
+    def add_director(self, director_name, birth_date, movie_id):
+        try:
+            new_director = Director(
+                director_name=director_name,
+                birth_date=birth_date,
+                movie_id=movie_id
+            )
+            self.db.session.add(new_director)
             self.db.session.commit()
         except SQLAlchemyError as e:
             self.db.session.rollback()

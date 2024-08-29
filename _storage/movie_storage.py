@@ -11,9 +11,11 @@ class Movie(db.Model):
     directory = db.Column(db.String, nullable=True)
     release_date = db.Column(db.Date, nullable=True)
     user_id = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
-    
-    users = relationship('User', back_populates='movies')
-    reviews = relationship('Review', back_populates='movies')
+
+    owner = relationship('User', back_populates='movies')
+    director = relationship('Director', back_populates='directed_movies')
+    reviews = relationship('Review', back_populates='movie')
+
     
     
     
