@@ -1,5 +1,11 @@
 import requests
-import openai
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+OMDB_API_KEY = os.getenv("OMDB_API_KEY")
+RAPIDAPI_KEY = os.getenv("RAPIDAPI_KEY")
+RAPIDAPI_HOST = "chat-gpt-3-5-turbo2.p.rapidapi.com" 
 
 
 def fetch_movie_details_from_omdb(movie_title):
@@ -20,17 +26,31 @@ def fetch_movie_details_from_omdb(movie_title):
 
 
 def get_movie_recommendation(query):
+    url = f"https://{RAPIDAPI_HOST}/chat/completions"
+
+    headers = {
+        "content-type": "application/json",
+        "X-RapidAPI-Key": RAPIDAPI_KEY,
+        "X-RapidAPI-Host": RAPIDAPI_HOST
+    }
+
+    payload = {
+        "model": "gpt-3.5-turbo",
+        "messages": [
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": f"Suggest some movies for: {query}"}
+        ],
+        "max_tokens": 150,
+        "temperature": 0.7,
+        "n": 1
+    }
+
     try:
-        response = openai.Completion.create(
-            engine="text-davinci-003",  # or another engine such as gpt-4
-            prompt=f"Suggest some movies for: {query}",
-            max_tokens=150,
-            n=1,
-            stop=None,
-            temperature=0.7,
-        )
-        recommendations = response.choices[0].text.strip()
+        response = requests.post(url, json=payload, headers=headers)
+        response.raise_for_status()
+        data = response.json()
+        recommendations = data['choices'][0]['message']['content'].strip()
         return recommendations
-    except Exception as e:
+    except requests.exceptions.RequestException as e:
         print(f"Error fetching recommendation: {e}")
         return None

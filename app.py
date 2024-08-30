@@ -3,16 +3,12 @@ from flask_migrate import Migrate
 from _storage.db_data_manager import SQLiteDataManager
 from api import api
 import os
-import openai
 from query import fetch_movie_details_from_omdb, get_movie_recommendation
 from datetime import datetime
 from _storage.db_instance import db
 from dotenv import load_dotenv
 
 app = Flask(__name__)
-app.secret_key = "supersecretkey"
-app.register_blueprint(api, url_prefix="/api")
-
 database_path = os.path.join(
     os.path.abspath(os.path.dirname(__file__)), "_data", "movies_data.sqlite"
 )
@@ -23,9 +19,9 @@ data_manager = SQLiteDataManager(db)
 migrate = Migrate(app, db)
 
 load_dotenv()
-OMDB_API_KEY = os.getenv("OMDB_API_KEY")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-openai.api_key = OPENAI_API_KEY
+app_key = os.getenv("app_key")
+app.secret_key = f"{app_key}"
+app.register_blueprint(api, url_prefix="/api")
 
 
 @app.errorhandler(404)
