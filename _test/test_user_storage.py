@@ -9,28 +9,27 @@ from _storage.movie_storage import Movie
 class TestUserStorage(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        test_db_path = os.path.join(
+        cls.test_db_path = os.path.join(
             os.path.abspath(os.path.dirname(__file__)),
             "test_movies_data.sqlite",
         )
         
-        print(f"Test DB path: {test_db_path}")
+        print(f"Test DB path: {cls.test_db_path}")
 
-
-        app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{test_db_path}"
+        app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{cls.test_db_path}"
         app.config["TESTING"] = True
         app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
         with app.app_context():
             db.create_all()
 
-    # @classmethod
-    # def tearDownClass(cls):
-    #     with app.app_context():
-    #         db.session.remove()
-    #         db.drop_all()
-    #     if os.path.exists(test_db_path):
-    #         os.remove(test_db_path)
+    @classmethod
+    def tearDownClass(cls):
+        with app.app_context():
+            db.session.remove()
+            db.drop_all()
+        if os.path.exists(cls.test_db_path):
+            os.remove(cls.test_db_path)
 
     def test_add_user(self):
         with app.app_context():
