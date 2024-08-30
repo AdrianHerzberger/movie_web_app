@@ -1,16 +1,17 @@
 from flask import Flask, render_template, flash, request, redirect, url_for
 from flask_migrate import Migrate
 from _storage.db_data_manager import SQLiteDataManager
-from api import api 
+from api import api
 import os
 import requests
+import openai
 from datetime import datetime
 from _storage.db_instance import db
 from dotenv import load_dotenv
 
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
-app.register_blueprint(api, url_prefix='/api') 
+app.register_blueprint(api, url_prefix="/api")
 
 database_path = os.path.join(
     os.path.abspath(os.path.dirname(__file__)), "_data", "movies_data.sqlite"
@@ -23,6 +24,8 @@ migrate = Migrate(app, db)
 
 load_dotenv()
 OMDB_API_KEY = os.getenv("OMDB_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+openai.api_key = OPENAI_API_KEY
 
 
 def fetch_movie_details_from_omdb(movie_title):
@@ -39,6 +42,23 @@ def fetch_movie_details_from_omdb(movie_title):
                 data["Released"] = None
         return data
     else:
+        return None
+
+
+def get_movie_recommendation(query):
+    try:
+        response = openai.Completion.create(
+            engine="text-davinci-003",  # or another engine such as gpt-4
+            prompt=f"Suggest some movies for: {query}",
+            max_tokens=150,
+            n=1,
+            stop=None,
+            temperature=0.7,
+        )
+        recommendations = response.choices[0].text.strip()
+        return recommendations
+    except Exception as e:
+        print(f"Error fetching recommendation: {e}")
         return None
 
 
@@ -67,6 +87,7 @@ def list_users():
             flash(f"Error fetching users: {str(e)}")
 
     return render_template("users.html", users=users)
+
 
 @app.route("/directors", methods=["GET"])
 def list_directors():
@@ -237,6 +258,22 @@ def delete_movie(user_id, movie_id):
                 flash(f"Error updating movie: {str(e)}")
 
     return render_template("delete_movie.html")
+
+
+@app.route("/recommend", methods=["GET", "POST"])
+def recommend_movie():
+    if request.method == "POST":
+        user_query = request.form["query"]
+        recommendations = get_movie_recommendation(user_query)
+
+        if recommendations:
+            flash(f"Recommendations: {recommendations}")
+        else:
+            flash("Sorry, I couldn't fetch any recommendations at this time.")
+
+        return redirect(url_for("recommend_movie"))
+
+    return render_template("recommend_movie.html")
 
 
 if __name__ == "__main__":
