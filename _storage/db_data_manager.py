@@ -76,7 +76,10 @@ class SQLiteDataManager(DataManagerInterface):
                 self.db.session.commit()
             except SQLAlchemyError as e:
                 self.db.session.rollback()
-                print(f"Error updating movie: {e}")
+                print(f"Error deleting movie: {e}")
+                return False
+        return True
+
 
     def get_movie_by_id(self, movie_id):
         return Movie.query.get(movie_id)

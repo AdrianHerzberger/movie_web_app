@@ -213,13 +213,14 @@ def delete_movie(user_id, movie_id):
     if request.method == "POST":
         user = data_manager.get_user(user_id)
         if user:
-            try:
-                data_manager.delete_movie(movie_id)
+            success = data_manager.delete_movie(movie_id)
+            if success:
                 flash("Movie deleted successfully!")
-            except Exception as e:
-                flash(f"Error updating movie: {str(e)}")
-
-    return render_template("delete_movie.html")
+            else:
+                flash("Error deleting movie. Please try again.")
+        else:
+            flash("User not found.")
+        return render_template("delete_movie.html")
 
 
 @app.route("/recommend", methods=["GET", "POST"])
